@@ -8,6 +8,7 @@ import { editFunction } from "@/controller/edit";
 import { handleSubmit } from "@/controller/submit";
 import { formValueTypes } from "@/types/fieldTypes";
 import { todoTypes } from "@/types/todoTypes";
+import SideBar from "@/components/sideBar";
 
 export default function Home() {
     const { todos, dispatch } = useTodos();
@@ -38,26 +39,14 @@ export default function Home() {
     ];
 
     return (
-        <div className="grid grid-cols-5">
-            {/* Sidebar with form */}
-            <div className="h-screen">
-                <div className="border-r rounded-md h-full p-2">
-                    <Form
-                        formValue={formValue}
-                        setFormValue={setFormValue}
-                        handleSubmit={(e: React.FormEvent<HTMLFormElement>) =>
-                            handleSubmit(e, formValue, dispatch)
-                        }
-                    />
-                </div>
-            </div>
+        <div className="grid grid-cols-5 bg-background">
+            <SideBar />
 
-            {/* Main content */}
-            <div className="h-screen grid grid-cols-2 p-4 space-x-4 col-span-4">
-                {/* Todos section */}
-                <div className="border p-4 rounded-xl space-y-4">
+            <div className="relative grid grid-cols-2 p-4 space-x-4 col-span-4">
+                <div className="p-4 rounded-md space-y-4">
+
                     <div className="flex justify-between">
-                        <h1 className="text-2xl font-bold text-white">
+                        <h1 className="text-2xl font-bold text-text">
                             Todos:
                         </h1>
                         <div className="flex space-x-8 items-center">
@@ -73,8 +62,8 @@ export default function Home() {
                         </div>
                     </div>
 
-                    <div className="border rounded-md p-2 flex-1 h-220">
-                        <div className="space-y-2 overflow-y-scroll max-h-full overflow-hidden h-full">
+                    <div className="p-2 h-220 border rounded-md">
+                        <div className="space-y-2 overflow-y-auto max-h-full h-full">
                             {todos
                                 .filter((todo) => !todo.completed)
                                 .map((todo, index) => (
@@ -104,16 +93,30 @@ export default function Home() {
                 </div>
 
                 {/* Completed section */}
-                <div className="border p-4 rounded-xl space-y-4">
-                    <h1 className="text-2xl font-bold text-white">
+
+                <div className="p-4 rounded-md space-y-4">
+                    <h1 className="text-2xl font-bold text-text">
                         Completed Recently:
                     </h1>
-                    <div className="border rounded-md p-2 space-y-2 flex-1">
-                        {todos
-                            .filter((todo) => todo.completed)
-                            .map((todo) => (
-                                <h1 key={todo.id}>{todo.task}</h1>
-                            ))}
+
+                    {/* Completed todos */}
+
+                    <div className="p-2 h-220 border rounded-md">
+                        <div className="space-y-2 overflow-y-auto max-h-full h-full">
+                            {todos
+                                .filter((todo) => todo.completed)
+                                .map((todo, index) => (
+                                    <div
+                                        key={todo.id}
+                                        className="flex bg-white/10 p-4 rounded-sm justify-between"
+                                    >
+                                        <div className="flex space-x-2">
+                                            <h1>Task {index + 1}:</h1>
+                                            <h1 className="">{todo.task}</h1>
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
                     </div>
                 </div>
             </div>
